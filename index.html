@@ -2,13 +2,15 @@
 <html>
 <head>
 <!-- En-tête du document  -->
-<meta charset="utf-8" /> 
+<meta charset="utf-8" />
+<script type="text/javascript" src="zepto.js"></script>
 <title>Comment utiliser la souris</title>
 <style>
 body {
     margin: 0;
     padding: 0;
     font-family: sans-serif;
+    overflow: hidden;
 }
 
 .slide {
@@ -39,7 +41,7 @@ body {
     background: blue;
 }
 
-#wrap_balles {
+.wrap_balles {
     position: absolute;
     left: 0;
     right: 0;
@@ -61,7 +63,35 @@ body {
     bottom: 50px;
 }
 
-.hit:hover {
+.hit_cg:hover {
+    cursor: pointer;
+}
+
+#phase2 {
+    position: absolute;
+    width: 160px;
+    background: brown;
+    right: 20px;
+    top: 20px;
+    color: white;
+    font-size: 1.8em;
+    padding: 10px 0;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+#phase3 {
+    position: absolute;
+    width: 160px;
+    background: green;
+    right: 20px;
+    top: 20px;
+    color: white;
+    font-size: 1.8em;
+    padding: 10px 0;
+    text-align: center;
+    vertical-align: middle;
     cursor: pointer;
 }
 </style>
@@ -71,17 +101,26 @@ body {
 <!-- Corps du document  -->
 <div id="clic_gauche" class="slide">
     <h1>Clic gauche</h1>
-    <div id="wrap_balles">
-        <span id="balle1" class="balle hit"></span>
-        <span id="balle2" class="balle hit"></span>
-        <span id="balle3" class="balle hit"></span>
-        <span id="balle4" class="balle hit"></span>
-        <span id="balle5" class="balle hit"></span>
+    <div id="phase2">Suivant</div>
+    <div class="wrap_balles">
+        <span id="balle1" class="balle hit_cg"></span>
+        <span id="balle2" class="balle hit_cg"></span>
+        <span id="balle3" class="balle hit_cg"></span>
+        <span id="balle4" class="balle hit_cg"></span>
+        <span id="balle5" class="balle hit_cg"></span>
     </div>
 </div>
 
 <div id="clic_droit" class="slide">
     <h1>Clic droit</h1>
+    <div id="phase3">Suivant</div>
+    <div class="wrap_balles">
+        <span class="balle hit_cd"></span>
+        <span class="balle hit_cd"></span>
+        <span class="balle hit_cd"></span>
+        <span class="balle hit_cd"></span>
+        <span class="balle hit_cd"></span>
+    </div>
 </div>
 
 <div id="double_clic" class="slide">
@@ -89,20 +128,33 @@ body {
 </div>
 <script>
     //**    Clic gauche **//
-    hit = document.getElementsByClassName('hit');
+    cg_hits = 5;
 
-    Array.from(hit).forEach(function(e) {
+
+    Array.from(document.getElementsByClassName('hit_cg')).forEach(function(e) {
         e.addEventListener("click", function() {
             this.style.display = "none";
+            cg_hits -= 1;
         });
     });
     document.getElementById("clic_gauche").addEventListener("contextmenu", function(e) {
         e.preventDefault();
     });
+    document.getElementById("phase2").addEventListener("click", function(e) {
+        if (cg_hit <= 0) {
+            element = document.getElementById("clic_droit");
+            element.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
+        } else { return false; }
+        
+    });
 
     //**    Clic droit  **//
     document.getElementById("double_clic").addEventListener("dblclick", function() {
         alert("ok");
+    });
+    document.getElementById("phase3").addEventListener("click", function(e) {
+        element = document.getElementById("double_clic");
+        element.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
     });
 
     //**    Double clic **//
