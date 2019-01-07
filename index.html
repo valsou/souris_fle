@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- En-tête du document  -->
+<meta charset="utf-8" /> 
+<title>Comment utiliser la souris</title>
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+.slide {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    width: 100%;
+    height: 100vh;
+    position: relative;
+}
+
+.slide h1 {
+    color: white;
+    margin: 0;
+    padding: 0;
+    font-size: 3rem;
+}
+
+#clic_gauche {
+    background: red;
+}
+
+#clic_droit {
+    background: olivedrab;
+}
+
+#double_clic {
+    background: blue;
+}
+
+#wrap_balles {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 50px;
+    display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: space-around;
+	align-items: center;
+	align-content: center;
+}
+
+.balle {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: white;
+    bottom: 50px;
+}
+
+.hit:hover {
+    cursor: pointer;
+}
+</style>
+</head>
+ 
+<body>
+<!-- Corps du document  -->
+<div id="clic_gauche" class="slide">
+    <h1>Clic gauche</h1>
+    <div id="wrap_balles">
+        <span id="balle1" class="balle hit"></span>
+        <span id="balle2" class="balle hit"></span>
+        <span id="balle3" class="balle hit"></span>
+        <span id="balle4" class="balle hit"></span>
+        <span id="balle5" class="balle hit"></span>
+    </div>
+</div>
+
+<div id="clic_droit" class="slide">
+    <h1>Clic droit</h1>
+</div>
+
+<div id="double_clic" class="slide">
+    <h1>Clic double-clic</h1>
+</div>
+<script>
+    //**    Clic gauche **//
+    hit = document.getElementsByClassName('hit');
+
+    Array.from(hit).forEach(function(e) {
+        e.addEventListener("click", function() {
+            this.style.display = "none";
+        });
+    });
+    document.getElementById("clic_gauche").addEventListener("contextmenu", function(e) {
+        e.preventDefault();
+    });
+
+    //**    Clic droit  **//
+    document.getElementById("double_clic").addEventListener("dblclick", function() {
+        alert("ok");
+    });
+
+    //**    Double clic **//
+    document.getElementById("clic_droit").addEventListener("contextmenu", function(e) {
+        e.preventDefault();
+        alert("DROIT");
+    });
+
+    document.getElementById("double_clic").addEventListener("contextmenu", function(e) {
+        e.preventDefault();
+    });
+</script>
+</body>
+ 
+</html>
