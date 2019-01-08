@@ -3,7 +3,6 @@
 <head>
 <!-- En-tête du document  -->
 <meta charset="utf-8" />
-<script type="text/javascript" src="zepto.js"></script>
 <title>Comment utiliser la souris</title>
 <style>
 body {
@@ -41,6 +40,19 @@ body {
     background: blue;
 }
 
+#bravo {
+    background: yellow;
+    font-size: 14em;
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#bravo p {
+    margin: 0;
+}
+
 .wrap_balles {
     position: absolute;
     left: 0;
@@ -63,11 +75,14 @@ body {
     bottom: 50px;
 }
 
-.hit_cg:hover {
+.hit_cg:hover,
+.hit_cd:hover,
+.hit_dc:hover {
     cursor: pointer;
 }
 
 #phase2 {
+    visibility: hidden;
     position: absolute;
     width: 160px;
     background: brown;
@@ -82,6 +97,7 @@ body {
 }
 
 #phase3 {
+    visibility: hidden;
     position: absolute;
     width: 160px;
     background: green;
@@ -125,47 +141,83 @@ body {
 
 <div id="double_clic" class="slide">
     <h1>Clic double-clic</h1>
+    <div class="wrap_balles">
+        <span class="balle hit_dc"></span>
+        <span class="balle hit_dc"></span>
+        <span class="balle hit_dc"></span>
+        <span class="balle hit_dc"></span>
+        <span class="balle hit_dc"></span>
+    </div>
 </div>
+
+<div id="bravo" class="slide">
+    <p>Bravo !</p>
+</div>
+
 <script>
-    //**    Clic gauche **//
-    cg_hits = 5;
+    // Déclarations des variables globales
+    cg_hits = document.getElementsByClassName("hit_cg").length; // nombre de balles pour clic-gauche
+    cd_hits = document.getElementsByClassName("hit_cd").length; // nombre de balles pour clic-droit
+    dc_hits = document.getElementsByClassName("hit_dc").length; // nombre de balles pour double-clic
 
-
+    //#region       *** Clic-gauche ***
     Array.from(document.getElementsByClassName('hit_cg')).forEach(function(e) {
         e.addEventListener("click", function() {
             this.style.display = "none";
             cg_hits -= 1;
+            if (cg_hits <= 0) {
+                document.getElementById("phase2").style.visibility = "visible";
+            }
         });
     });
     document.getElementById("clic_gauche").addEventListener("contextmenu", function(e) {
         e.preventDefault();
     });
     document.getElementById("phase2").addEventListener("click", function(e) {
-        if (cg_hit <= 0) {
+        if (cg_hits <= 0) {
             element = document.getElementById("clic_droit");
             element.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
         } else { return false; }
         
     });
+    //#endregion
 
-    //**    Clic droit  **//
-    document.getElementById("double_clic").addEventListener("dblclick", function() {
-        alert("ok");
+    //#region       *** Clic-droit ***
+    Array.from(document.getElementsByClassName('hit_cd')).forEach(function(e) {
+        e.addEventListener("contextmenu", function() {
+            this.style.display = "none";
+            cd_hits -= 1;
+            if (cd_hits <= 0) {
+                document.getElementById("phase3").style.visibility = "visible";
+            }
+        });
     });
-    document.getElementById("phase3").addEventListener("click", function(e) {
+
+    document.getElementById("clic_droit").addEventListener("contextmenu", function(e) {
+        e.preventDefault();
+    });
+    document.getElementById("phase3").addEventListener("contextmenu", function(e) {
         element = document.getElementById("double_clic");
         element.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
     });
+    //#endregion
 
-    //**    Double clic **//
-    document.getElementById("clic_droit").addEventListener("contextmenu", function(e) {
-        e.preventDefault();
-        alert("DROIT");
+    //#region       *** Double-clic ***
+    Array.from(document.getElementsByClassName('hit_dc')).forEach(function(e) {
+        e.addEventListener("dblclick", function() {
+            this.style.display = "none";
+            dc_hits -= 1;
+            if (dc_hits <= 0) {
+                element = document.getElementById("bravo");
+                element.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
+            }
+        });
     });
 
     document.getElementById("double_clic").addEventListener("contextmenu", function(e) {
         e.preventDefault();
     });
+    //#endregion
 </script>
 </body>
  
